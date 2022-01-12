@@ -1,19 +1,47 @@
-file1 = "config-5558.txt"
-file2 = "config-5557.txt"
-log = ">> "+filename
+# New
 
-lines = [
-    "net group /domain"+log,
-    "[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()"+log,
+**PS shell**
 
-]
+#### get current domain
+```
+$log1 = "domaininfo.txt"
+[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain() >> $log1
+```
 
-whoami = [
-    whoami
-    whoami /groups
-]
+#### general user enum
+```
+$log3 = "domain_users_config.txt"
+$domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+$PDC = ($domainObj.PdcRoleOwner).Name
+$SearchString = "LDAP://"
+$SearchString += $PDC + "/"
+$DistinguishedName = "DC=$($domainObj.Name.Replace('.', ',DC='))"
+$SearchString += $DistinguishedName
+$SearchString > $log2
 
-groups = [
+
+$Searcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]$SearchString)
+$objDomain = New-Object System.DirectoryServices.DirectoryEntry
+$Searcher.SearchRoot = $objDomain
+
+$Searcher.filter="samAccountType=805306368"
+$Searcher.FindAll() >> $log3
+$Result = $Searcher.FindAll()
+
+Foreach($obj in $Result)
+{
+Foreach($prop in $obj.Properties)
+{
+$prop >> $log3
+}
+echo ------------------------ >> $log3
+}
+```
+
+
+#### group enum
+```
+$log2 = "domain_groups_config.txt"
 $domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
 $PDC = ($domainObj.PdcRoleOwner).Name
 $SearchString = "LDAP://"
@@ -27,12 +55,15 @@ $Searcher.filter="(objectClass=Group)"
 $Result = $Searcher.FindAll()
 Foreach($obj in $Result)
 {
-$obj.Properties.name
+$obj.Properties.name >> $log2
 }
-]
+```
 
-users = [
-    $domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+#### user-in-a-group enum
+```
+$log3 = "users_in_a_group_in_domain.txt"
+$groupname = "Administrators"
+$domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
 $PDC = ($domainObj.PdcRoleOwner).Name
 $SearchString = "LDAP://"
 $SearchString += $PDC + "/"
@@ -41,30 +72,19 @@ $SearchString += $DistinguishedName
 $Searcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]$SearchString)
 $objDomain = New-Object System.DirectoryServices.DirectoryEntry
 $Searcher.SearchRoot = $objDomain
-$Searcher.filter="samAccountType=805306368"
-$Searcher.FindAll()
+$Searcher.filter="(name=$groupname)"
 $Result = $Searcher.FindAll()
 Foreach($obj in $Result)
 {
-Foreach($prop in $obj.Properties)
-{
-$prop
+    $obj.Properties.member >> $log3
 }
-Write-Host "------------------------"
-}
-]
+```
 
-# Get logged_on_users and active sessions
-ps_commands = [
-wget https://github.com/PowerShellEmpire/PowerTools/blob/master/PowerView/powerview.ps1
-Import-Module .\PowerView.ps1
-Get-NetLoggedon -ComputerName compnamegoeshere
-Get-NetSession -ComputerName compnamegoeshere
 
-]
-
-look_4_web_servers = [
-    $domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+#### service principal names (running services)
+**this example is for http**
+```
+$domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
 $PDC = ($domainObj.PdcRoleOwner).Name
 $SearchString = "LDAP://"
 $SearchString += $PDC + "/"
@@ -82,14 +102,4 @@ Foreach($prop in $obj.Properties)
 $prop
 }
 }
-]
-
-
-resolve_web_servers_4_ip_addr = [
-    nslookup webserver.tld
-]
-
-
-low_and_slow = [
-    net accounts
-]
+```

@@ -6,12 +6,18 @@ nslookup CorpWebServer.corp.com
 ```
 
 
-set logfile vars
+**set logfile vars**
 ```
 set logfile1=log1.txt
 set logfile2=log2.txt
 ```
-get user accounts
+#### get info about account policy
+```
+echo "--------------------  Net Accounts --------------------" >> %logfile1%
+net accounts
+```
+
+#### get user accounts
 ```
 echo "--------------------  Net USER --------------------" >> %logfile1%
 net user > %logfile1%
@@ -29,8 +35,8 @@ set domain=domain.tld
 
 
 
- - put users in lists files
- - query user accounts in the file
+#### query user accounts in the file
+> put users in lists files
 
 ```
 set localuserfile=localusers.txt
