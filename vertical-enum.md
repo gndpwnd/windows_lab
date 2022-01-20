@@ -1,5 +1,10 @@
 ## Enumeration
 
+current priv
+```
+whoami /priv
+```
+
 sysinfo
 ```
 systeminfo | findstr /B /C:"OS Name" /C:"OS Version" /C:"System Type"
@@ -76,9 +81,20 @@ windows-privesc-check2.exe -h
 windows-privesc-check2.exe --dump -G
 ```
 
-## Privesc Examples
-
-User Account Control Bypass - FoodHelper
+UAC Bypass - check if a file auto elevates
+```
+set filename=C:\Windows\System32\fodhelper.exe
+sigcheck.exe -a -m %filename%
 ```
 
+
+Find weak permissions through services
+*files in C:\Program Files\ stand out bc they are user-installed not default services
+```
+Get-WmiObject win32_service | Select-Object Name, State, PathName | Where-Object {$_.State -like 'Running'}
+```
+
+See permissions of file that service is running
+```
+icacls "%service_filename%"
 ```
