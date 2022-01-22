@@ -1,0 +1,62 @@
+
+
+$ddir = "domain"
+$log1 = "$(ddir)/domaininfo.txt"
+$log2 = "$(ddir)/domain_users.txt"
+$log3 = "$(ddir)/domain_groups.txt"
+[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain() >> $log1
+
+$domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+$PDC = ($domainObj.PdcRoleOwner).Name
+$SearchString = "LDAP://"
+$SearchString += $PDC + "/"
+$DistinguishedName = "DC=$($domainObj.Name.Replace('.', ',DC='))"
+$SearchString += $DistinguishedName
+$Searcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]$SearchString)
+$objDomain = New-Object System.DirectoryServices.DirectoryEntry
+$Searcher.SearchRoot = $objDomain
+
+$Searcher.filter="samAccountType=805306368"
+$Searcher.FindAll() >> $log2
+$Result = $Searcher.FindAll()
+Foreach($obj in $Result)
+{
+Foreach($prop in $obj.Properties)
+{
+echo "----------------------------------------------------------------------" >> $(log2)_properties.txt
+$prop >> $(log2)_properties.txt
+}
+}
+
+$Searcher.filter="(objectClass=Group)"
+$Result = $Searcher.FindAll()
+Foreach($obj in $Result)
+{
+$obj.Properties.name >> $log3
+}
+
+
+$gdir = "$(ddir)/groups"
+foreach($line in [System.IO.File]::ReadLines($(log3)))
+{
+$groupname = $line
+$log4 = "$(gdir)/$(groupname).txt"
+$Searcher.filter="(name=$(groupname))"
+$Result = $Searcher.FindAll()
+Foreach($obj in $Result)
+{
+$obj.Properties.member >> $log3
+}
+}
+
+$sdir = "$(ddir)/services"
+$servicename = "http"
+$Searcher.filter="serviceprincipalname=*$(servicename)*"
+$Result = $Searcher.FindAll()
+Foreach($obj in $Result)
+{
+Foreach($prop in $obj.Properties)
+{
+$prop >> $(sdir)/$(servicename).txt
+}
+}

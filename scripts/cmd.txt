@@ -1,0 +1,37 @@
+
+set ldir=local
+set ddir=domain
+mkdir %ldir%
+mkdir %ddir%
+set log1=%ldir%/privs.txt
+set log2=%ldir%/system-snapshot.txt
+set log3=%ldir%/ports-and-firewall.txt
+set log4=%ldir%/app-and-drivers.txt
+set log5=%ddir%/net-user.txt
+set log6=%ddir%/net-accounts.txt
+echo "--------------------  Current Privileges --------------------" >> %log1%
+whoami /priv >> %log1%
+echo "--------------------  Systeminfo --------------------" >> %log1%
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version" /C:"System Type" >> %log1%
+echo "--------------------  Current Networking --------------------" >> %log2%
+ipconfig /all >> %log2%
+route print >> %log2%
+echo "--------------------  Current Processes --------------------" >> %log2%
+tasklist /SVC >> %log2%
+echo "--------------------  Scheduled Tasks --------------------" >> %log2%
+schtasks /query /fo LIST /v >> %log2%
+echo "--------------------  Current Ports --------------------" >> %log3%
+netstat -ano >> %log3%
+echo "--------------------  Firewall Profile --------------------" >> %log3%
+netsh advfirewall show currentprofile >> %log3%
+echo "--------------------  Firewall Rules --------------------" >> %log3%
+netsh advfirewall firewall show rule name=all >> %log3%
+echo "--------------------  Installed Apps --------------------" >> %log4%
+wmic product get name, version, vendor
+echo "--------------------  Installed Updates --------------------" >> %log4%
+wmic qfe get Caption, Description, HotFixID, InstalledOn
+echo "--------------------  Net USER --------------------" >> %log5%
+net user > %log5%
+net user /domain >> %log5%
+echo "--------------------  Net Accounts --------------------" >> %log6%
+net accounts >> %log6%
