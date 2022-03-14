@@ -1,0 +1,101 @@
+{
+  "main": {
+    "id": "01157bc9756e87e0",
+    "type": "split",
+    "children": [
+      {
+        "id": "b4c121eb5417b5c0",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "example/3. bloodhound-python overview.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ec831b60e65d9989",
+    "type": "split",
+    "children": [
+      {
+        "id": "cc785eebfbd7ec62",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8511c3e6db56c894",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "5664659219f6f5c0",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "8cd94be749260208",
+    "type": "split",
+    "children": [
+      {
+        "id": "e07676ccbc1b036c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "35486a167e1838ea",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "example/3. bloodhound-python overview.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "b4c121eb5417b5c0",
+  "lastOpenFiles": [
+    "example/3. bloodhound-python overview.md",
+    "example/example.md",
+    "example/imgs/3.png",
+    "example/imgs/2.png",
+    "example/imgs/1.png",
+    "example/imgs/4.png",
+    "example/2. getting started.md",
+    "example/1. context.md",
+    "example/4. bloodhound analysis.md"
+  ]
+}
