@@ -1,6 +1,0 @@
-set domain=domain.tld
-set ddir=domain
-mkdir %ddir%
-set log1=%ddir%/nslookup.txt
-nslookup %domain% >> %log1%
-

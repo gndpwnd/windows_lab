@@ -1,6 +1,13 @@
+This is not a .bat file.
+Simply copy and paste into the cmd prompt.
 
-set ldir=local
+
+
+set domain=domain.tld
 set ddir=domain
+mkdir %ddir%
+set log1=%ddir%/nslookup.txt
+nslookup %domain% >> %log1%
 mkdir %ldir%
 mkdir %ddir%
 set log1=%ldir%/privs.txt
@@ -35,3 +42,4 @@ net user > %log5%
 net user /domain >> %log5%
 echo "--------------------  Net Accounts --------------------" >> %log6%
 net accounts >> %log6%
+echo DONE
