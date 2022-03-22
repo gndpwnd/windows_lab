@@ -1,0 +1,11 @@
+$h = "192.168.0.10"
+$u = "dev"
+$p = "dev"
+$share = "tmp"
+$dir = "$HOME\Desktop\logs"
+
+Compress-Archive -LiteralPath $dir -DestinationPath $dir\logs.zip
+
+New-SmbMapping -LocalPath "T:" -RemotePath "\\$h\$share" -Username "$u" -Password "$p"
+move-item -path $dir\logs.zip -Destination "\\$h\$share"
+Remove-SmbMapping -RemotePath "\\$h\$share" -Force

