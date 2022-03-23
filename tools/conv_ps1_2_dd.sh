@@ -56,8 +56,7 @@ elif [ -z $otf ]; then
 	exit 1
 fi
 
-echo -e "
-DELAY 750
+echo -e "DELAY 750
 GUI r
 DELAY 1000
 STRING powershell Start-Process notepad -Verb runAs
@@ -65,6 +64,7 @@ ENTER" > $otf
 
 while read -r line;
 do
-   echo "String ${line}"
-   echo "ENTER"
+echo -e "STRING ${line}
+ENTER
+DELAY 100"
 done < $inf >> $otf

